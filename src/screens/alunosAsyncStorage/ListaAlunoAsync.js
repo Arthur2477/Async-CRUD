@@ -5,7 +5,7 @@ import { Button, Card, Dialog, FAB, MD3Colors, Portal, Text } from 'react-native
 import Toast from 'react-native-toast-message'
 
 
-export default function ListaalunosAsyncStorage({ navigation, route }) {
+export default function ListaAlunosAsync({ navigation, route }) {
 
   const [alunos, setalunos] = useState([])
   const [showModalExcluirUsuario, setShowModalExcluirUsuario] = useState(false)
@@ -18,7 +18,7 @@ export default function ListaalunosAsyncStorage({ navigation, route }) {
 
   async function loadalunos() {
     const response = await AsyncStorage.getItem('alunos')
-    console.log("🚀 ~ file: ListaalunosAsyncStorage.js:21 ~ loadalunos ~ response:", response)
+    console.log("🚀 ~ file: ListaAlunosAsync.js:21 ~ loadalunos ~ response:", response)
     const alunosStorage = response ? JSON.parse(response) : []
     setalunos(alunosStorage)
   }
@@ -29,34 +29,34 @@ export default function ListaalunosAsyncStorage({ navigation, route }) {
 
   const hideModal = () => setShowModalExcluirUsuario(false);
 
-  async function adicionaraluno(aluno) {
-    let novaListaalunos = alunos
-    novaListaalunos.push(aluno)
-    await AsyncStorage.setItem('alunos', JSON.stringify(novaListaalunos));
-    setalunos(novaListaalunos)
+  async function addaluno(aluno) {
+    let newListaalunos = alunos
+    newListaalunos.push(aluno)
+    await AsyncStorage.setItem('alunos', JSON.stringify(newListaalunos));
+    setalunos(newListaalunos)
   }
 
-  async function editaraluno(alunoAntiga, novosDados) {
-    console.log('aluno ANTIGA -> ', alunoAntiga)
-    console.log('DADOS NOVOS -> ', novosDados)
+  async function editaluno(alunoOld, newDados) {
+    console.log('aluno ANTIGA -> ', alunoOld)
+    console.log('DADOS NOVOS -> ', newDados)
 
-    const novaListaalunos = alunos.map(aluno => {
-      if (aluno == alunoAntiga) {
-        return novosDados
+    const newListaalunos = alunos.map(aluno => {
+      if (aluno == alunoOld) {
+        return newDados
       } else {
         return aluno
       }
     })
 
-    await AsyncStorage.setItem('alunos', JSON.stringify(novaListaalunos))
-    setalunos(novaListaalunos)
+    await AsyncStorage.setItem('alunos', JSON.stringify(newListaalunos))
+    setalunos(newListaalunos)
 
   }
 
   async function excluiraluno(aluno) {
-    const novaListaalunos = alunos.filter(p => p !== aluno)
-    await AsyncStorage.setItem('alunos', JSON.stringify(novaListaalunos))
-    setalunos(novaListaalunos)
+    const newListaalunos = alunos.filter(p => p !== aluno)
+    await AsyncStorage.setItem('alunos', JSON.stringify(newListaalunos))
+    setalunos(newListaalunos)
     Toast.show({
       type: 'success',
       text1: 'aluno excluida com sucesso!'
@@ -98,7 +98,7 @@ export default function ListaalunosAsyncStorage({ navigation, route }) {
 
             </Card.Content>
             <Card.Actions>
-              <Button onPress={() => navigation.push('FormalunoAsyncStorage', { acao: editaraluno, aluno: item })}>
+              <Button onPress={() => navigation.push('FormAlunoAsync', { acao: editaluno, aluno: item })}>
                 Editar
               </Button>
               <Button onPress={() => {
@@ -116,7 +116,7 @@ export default function ListaalunosAsyncStorage({ navigation, route }) {
       <FAB
         icon="plus"
         style={styles.fab}
-        onPress={() => navigation.push('FormalunoAsyncStorage', { acao: adicionaraluno })}
+        onPress={() => navigation.push('FormAlunoAsync', { acao: addaluno })}
       />
 
 

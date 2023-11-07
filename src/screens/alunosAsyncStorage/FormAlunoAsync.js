@@ -3,9 +3,9 @@ import { StyleSheet, View } from 'react-native'
 import { Button, Text, TextInput } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 
-export default function FormalunoAsyncStorage({ navigation, route }) {
+export default function FormAlunoAsync({ navigation, route }) {
 
-    const { acao, aluno: alunoAntiga } = route.params
+    const { acao, aluno: alunoOld } = route.params
 
     const [nome, setNome] = useState('')
     const [matricula, setmatricula] = useState('')
@@ -17,13 +17,13 @@ export default function FormalunoAsyncStorage({ navigation, route }) {
 
     useEffect(() => {
 
-        console.log('aluno -> ', alunoAntiga)
+        console.log('aluno -> ', alunoOld)
 
-        if (alunoAntiga) {
-            setNome(alunoAntiga.nome)
-            setmatricula(alunoAntiga.matricula)
-            setcurso(alunoAntiga.curso)
-            setturno(alunoAntiga.turno)
+        if (alunoOld) {
+            setNome(alunoOld.nome)
+            setmatricula(alunoOld.matricula)
+            setcurso(alunoOld.curso)
+            setturno(alunoOld.turno)
         }
 
     }, [])
@@ -36,28 +36,28 @@ export default function FormalunoAsyncStorage({ navigation, route }) {
         } else {
             setShowMensagemErro(false)
 
-            const novaaluno = {
+            const newaluno = {
                 nome: nome,
                 matricula: matricula,
                 curso: curso,
                 turno: turno
             }
 
-            const objetoEmString = JSON.stringify(novaaluno)
-            console.log("🚀 ~ file: Formaluno.js:47 ~ salvar ~ objetoEmString:", objetoEmString)
+            const objetoEmString = JSON.stringify(newaluno)
+            console.log("🚀 ~ file: FormAlunoAsync.js:47 ~ salvar ~ objetoEmString:", objetoEmString)
 
             console.log(typeof (objetoEmString))
 
             const objeto = JSON.parse(objetoEmString)
-            console.log("🚀 ~ file: Formaluno.js:52 ~ salvar ~ objeto:", objeto)
+            console.log("🚀 ~ file: FormAlunoAsync.js:52 ~ salvar ~ objeto:", objeto)
 
             console.log(typeof (objeto))
 
 
-            if (alunoAntiga) {
-                acao(alunoAntiga, novaaluno)
+            if (alunoOld) {
+                acao(alunoOld, newaluno)
             } else {
-                acao(novaaluno)
+                acao(newaluno)
             }
 
 
@@ -76,7 +76,7 @@ export default function FormalunoAsyncStorage({ navigation, route }) {
     return (
         <View style={styles.container}>
 
-            <Text variant='titleLarge' style={styles.title} >{alunoAntiga ? 'Editar aluno' : 'Adicionar aluno'}</Text>
+            <Text variant='titleLarge' style={styles.title} >{alunoOld ? 'Editar aluno' : 'Adicionar aluno'}</Text>
 
             <View style={styles.inputContainer}>
                 <TextInput
